@@ -1,11 +1,17 @@
-package com.myspace.wiki;
+package com.myspace.wiki.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
+/**
+ * @ComponentScan 注解来扫描包,但只会扫描当前包的子包
+ */
+//@ComponentScan({"com.myspace","com.test"})
+@ComponentScan("com.myspace")
 @SpringBootApplication
 public class WikiApplication {
 

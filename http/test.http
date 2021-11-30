@@ -1,4 +1,4 @@
-GET http://localhost:8880/hello
+GET http://localhost:8080/hello
 #Accept: application/json
 
 > {%
@@ -12,7 +12,7 @@ GET http://localhost:8880/hello
 %}
 ###
 
-POST http://localhost:8880/hello/post
+POST http://localhost:8080/hello/post
 Content-Type: application/x-www-form-urlencoded
 
 name=TEST

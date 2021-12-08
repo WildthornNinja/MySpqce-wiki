@@ -11,6 +11,7 @@ import com.myspace.wiki.request.EbookSaveReq;
 import com.myspace.wiki.response.EbookQueryResp;
 import com.myspace.wiki.response.PageResp;
 import com.myspace.wiki.util.CopyUtil;
+import com.myspace.wiki.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ public class EbookService {
 
     @Resource
     private EbookMapper ebookMapper;
+    @Resource
+    private SnowFlake snowFlake;
+
 
     /**
      * 持久层返回List<Ebook>需要转成List<EbookResp>再返回controller
@@ -74,6 +78,10 @@ public class EbookService {
         Ebook ebook = CopyUtil.copy(ebookSaveReq,Ebook.class);
         if(ObjectUtils.isEmpty(ebookSaveReq.getId())){
             //新增
+            ebook.setId(snowFlake.nextId());
+            ebook.setDocCount(0);
+            ebook.setViewCount(0);
+            ebook.setVoteCount(0);
             ebookMapper.insert(ebook);
         }else{
             //更新

@@ -1,6 +1,8 @@
 package com.myspace.wiki.service;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.myspace.wiki.domain.Ebook;
 import com.myspace.wiki.domain.EbookExample;
 import com.myspace.wiki.mapper.EbookMapper;
@@ -29,13 +31,18 @@ public class EbookService {
      * @return
      */
     public List<EbookQueryResp> list(EbookQueryReq ebookQueryReq) {
+
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();//criteria相当于SQL语句中的查询条件
         if(!ObjectUtils.isEmpty(ebookQueryReq.getName())){
             criteria.andNameLike("%"+ebookQueryReq.getName()+"%");
         }
-
+        PageHelper.startPage(1,3);
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
+
+        PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
+        LOG.info("总行数:{}",pageInfo.getTotal());//总行数
+        LOG.info("总页数:{}",pageInfo.getPages());//总页数
 
 //        List<EbookQueryResp> respList = new ArrayList<>();
 //        for (Ebook ebook : ebookList) {

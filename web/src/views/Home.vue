@@ -103,7 +103,6 @@ export default defineComponent({
         const data = response.data;
         ebooks.value = data.content;
         ebooklist.books = data.content;
-        console.log(response);
       });
     });
 

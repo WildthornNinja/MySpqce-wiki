@@ -16,7 +16,7 @@
         </template>
         <template v-slot:action="{ text, record }">
           <a-space size="small">
-            <a-button type="primary"  @click="edit(record)">
+            <a-button type="primary" @click="edit(record)">
               编辑
             </a-button>
             <a-button type="danger">
@@ -27,11 +27,13 @@
       </a-table>
     </a-layout-content>
   </a-layout>
+
   <a-modal
       title="电子书表单"
       v-model:visible="modalVisible"
       :confirm-loading="modalLoading"
-      @ok="handleModalOk">
+      @ok="handleModalOk"
+  >
     <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="封面">
         <a-input v-model:value="ebook.cover" />
@@ -111,9 +113,9 @@ export default defineComponent({
     const handleQuery = (params: any) => {
       loading.value = true;
       axios.get("/ebook/list", {
-        params : {
-          page : params.page,
-          size : params.size,
+        params: {
+          page: params.page,
+          size: params.size
         }
       }).then((response) => {
         loading.value = false;
@@ -136,22 +138,32 @@ export default defineComponent({
         size: pagination.pageSize
       });
     };
+
     // -------- 表单 ---------
     const ebook = ref({});
     const modalVisible = ref(false);
     const modalLoading = ref(false);
     const handleModalOk = () => {
       modalLoading.value = true;
-      setTimeout(() => {
-        modalVisible.value = false;
-        modalLoading.value = false;
-      }, 2000);
+      axios.post("/ebook/save", ebook.value).then((response) => {
+        const data = response.data; // data = commonResp
+        if (data.success) {
+          modalVisible.value = false;
+          modalLoading.value = false;
+
+          // 重新加载列表
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize,
+          });
+        }
+      });
     };
 
     /**
      * 编辑
      */
-    const edit = (record : any) => {
+    const edit = (record: any) => {
       modalVisible.value = true;
       ebook.value = record
     };
@@ -172,6 +184,7 @@ export default defineComponent({
 
       edit,
 
+      ebook,
       modalVisible,
       modalLoading,
       handleModalOk

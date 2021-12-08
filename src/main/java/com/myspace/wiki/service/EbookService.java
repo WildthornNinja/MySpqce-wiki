@@ -7,6 +7,7 @@ import com.myspace.wiki.domain.Ebook;
 import com.myspace.wiki.domain.EbookExample;
 import com.myspace.wiki.mapper.EbookMapper;
 import com.myspace.wiki.request.EbookQueryReq;
+import com.myspace.wiki.request.EbookSaveReq;
 import com.myspace.wiki.response.EbookQueryResp;
 import com.myspace.wiki.response.PageResp;
 import com.myspace.wiki.util.CopyUtil;
@@ -64,6 +65,23 @@ public class EbookService {
         pageResp.setList(list);
 
         return pageResp;
+    }
+
+    /**
+     * 保存电子书
+     */
+    public void save(EbookSaveReq ebookSaveReq){
+        Ebook ebook = CopyUtil.copy(ebookSaveReq,Ebook.class);
+        if(ObjectUtils.isEmpty(ebookSaveReq.getId())){
+            //新增
+            ebookMapper.insert(ebook);
+        }else{
+            //更新
+            ebookMapper.updateByPrimaryKey(ebook);
+        }
+
+
+
     }
 
 }

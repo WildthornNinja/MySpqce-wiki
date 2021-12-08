@@ -8,6 +8,7 @@ import com.myspace.wiki.domain.EbookExample;
 import com.myspace.wiki.mapper.EbookMapper;
 import com.myspace.wiki.request.EbookQueryReq;
 import com.myspace.wiki.response.EbookQueryResp;
+import com.myspace.wiki.response.PageResp;
 import com.myspace.wiki.util.CopyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +31,14 @@ public class EbookService {
      * @param ebookQueryReq
      * @return
      */
-    public List<EbookQueryResp> list(EbookQueryReq ebookQueryReq) {
+    public PageResp<EbookQueryResp> list(EbookQueryReq ebookQueryReq) {
 
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();//criteria相当于SQL语句中的查询条件
         if(!ObjectUtils.isEmpty(ebookQueryReq.getName())){
-            criteria.andNameLike("%"+ebookQueryReq.getName()+"%");
+            criteria.andNameLike("%"+ ebookQueryReq.getName()+"%");
         }
-        PageHelper.startPage(1,3);
+        PageHelper.startPage(ebookQueryReq.getPage(), ebookQueryReq.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
@@ -57,6 +58,11 @@ public class EbookService {
         //使用CopyUtil工具类封装相同Copy功能，封装大量相似代码，提高代码复用性
         //列表复制
         List<EbookQueryResp> list = CopyUtil.copyList(ebookList, EbookQueryResp.class);
-        return list;
+
+        PageResp<EbookQueryResp> pageResp = new PageResp();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(list);
+
+        return pageResp;
     }
 }

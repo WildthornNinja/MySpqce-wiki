@@ -10,6 +10,7 @@ import com.myspace.wiki.util.CopyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -30,7 +31,10 @@ public class EbookService {
     public List<EbookQueryResp> list(EbookQueryReq ebookQueryReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();//criteria相当于SQL语句中的查询条件
-        criteria.andNameLike("%"+ebookQueryReq.getName()+"%");
+        if(!ObjectUtils.isEmpty(ebookQueryReq.getName())){
+            criteria.andNameLike("%"+ebookQueryReq.getName()+"%");
+        }
+
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
 //        List<EbookQueryResp> respList = new ArrayList<>();

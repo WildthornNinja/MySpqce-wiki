@@ -3,14 +3,15 @@ package com.myspace.wiki.controller;
 
 import com.myspace.wiki.request.CategoryQueryReq;
 import com.myspace.wiki.request.CategorySaveReq;
-import com.myspace.wiki.response.CommonResp;
 import com.myspace.wiki.response.CategoryQueryResp;
+import com.myspace.wiki.response.CommonResp;
 import com.myspace.wiki.response.PageResp;
 import com.myspace.wiki.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -19,6 +20,14 @@ public class CategoryController {
 
     @Resource
     private CategoryService categoryService;
+
+    @GetMapping("/all")
+    public CommonResp all() {
+        CommonResp<List<CategoryQueryResp>> resp = new CommonResp<>();
+        List<CategoryQueryResp> list = categoryService.all();
+        resp.setContent(list);
+        return resp;
+    }
 
     @GetMapping("/list")
     public CommonResp list(@Valid CategoryQueryReq categoryQueryReq) {

@@ -30,7 +30,16 @@ public class CategoryService {
     @Resource
     private SnowFlake snowFlake;
 
+    public List<CategoryQueryResp> all() {
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
+        List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
 
+        // 列表复制
+        List<CategoryQueryResp> list = CopyUtil.copyList(categoryList, CategoryQueryResp.class);
+
+        return list;
+    }
     /**
      * 持久层返回List<Category>需要转成List<CategoryResp>再返回controller
      * @param categoryQueryReq
@@ -39,6 +48,7 @@ public class CategoryService {
     public PageResp<CategoryQueryResp> list(CategoryQueryReq categoryQueryReq) {
 
         CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
         CategoryExample.Criteria criteria = categoryExample.createCriteria();//criteria相当于SQL语句中的查询条件
         if(!ObjectUtils.isEmpty(categoryQueryReq.getName())){
             criteria.andNameLike("%"+ categoryQueryReq.getName()+"%");

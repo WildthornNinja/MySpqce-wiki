@@ -73,6 +73,9 @@
       <a-form-item label="顺序">
         <a-input v-model:value="doc.sort" />
       </a-form-item>
+      <a-form-item label="内容">
+        <div id="content"></div>
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -84,6 +87,7 @@ import {message, Modal} from 'ant-design-vue';
 import {Tool} from "@/util/tool";
 import {useRoute} from "vue-router";
 import ExclamationCircleOutlined from "@ant-design/icons-vue/ExclamationCircleOutlined";
+import E from 'wangeditor'
 
 export default defineComponent({
   name: 'AdminDoc',
@@ -165,6 +169,13 @@ export default defineComponent({
     const doc = ref({});
     const modalVisible = ref(false);
     const modalLoading = ref(false);
+    // 初始化富文本
+    let editor:any;
+    const createEditor = () => {
+      editor = new E('#content');
+      editor.create();
+    }
+
     const handleModalOk = () => {
       modalLoading.value = true;
       axios.post("/doc/save", doc.value).then((response) => {
@@ -260,6 +271,14 @@ export default defineComponent({
 
       // 为选择树添加一个"无"
       treeSelectData.value.unshift({id: 0, name: '无'});
+      setTimeout(function () {
+        if (editor == null) {
+          createEditor();
+        }else {
+          editor.destroy();//这里做了一次判断，判断编辑器是否被创建，如果创建了就先销毁。
+          createEditor();
+        }
+      })
     };
 
     /**
@@ -283,7 +302,7 @@ export default defineComponent({
       // 清空数组，否则多次删除时，数组会一直增加
       deleteIds.length = 0;
       deleteNames.length = 0;
-      getDeleteIds(level1.value, id);
+       getDeleteIds(level1.value, id);
       Modal.confirm({
           title: '重要提醒',
           icon: createVNode(ExclamationCircleOutlined),

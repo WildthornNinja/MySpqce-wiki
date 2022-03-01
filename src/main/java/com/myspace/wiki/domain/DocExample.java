@@ -1,5 +1,6 @@
 package com.myspace.wiki.domain;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,7 +145,7 @@ public class DocExample {
             return (Criteria) this;
         }
 
-        public Criteria andIdIn(List<Long> values) {
+        public Criteria andIdIn(List<String> values) {
             addCriterion("id in", values, "id");
             return (Criteria) this;
         }

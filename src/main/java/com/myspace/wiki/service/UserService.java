@@ -9,6 +9,7 @@ import com.myspace.wiki.exception.BusinessException;
 import com.myspace.wiki.exception.BusinessExceptionCode;
 import com.myspace.wiki.mapper.UserMapper;
 import com.myspace.wiki.request.UserQueryReq;
+import com.myspace.wiki.request.UserResetPasswordReq;
 import com.myspace.wiki.request.UserSaveReq;
 import com.myspace.wiki.response.PageResp;
 import com.myspace.wiki.response.UserQueryResp;
@@ -103,5 +104,12 @@ public class UserService {
         } else {
             return userList.get(0);
         }
+    }
+    /**
+     +     * 修改密码
+     +     */
+    public void resetPassword(UserResetPasswordReq req) {
+        User user = CopyUtil.copy(req, User.class);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }

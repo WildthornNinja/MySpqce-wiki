@@ -5,6 +5,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.myspace.wiki.domain.User;
 import com.myspace.wiki.domain.UserExample;
+import com.myspace.wiki.exception.BusinessException;
+import com.myspace.wiki.exception.BusinessExceptionCode;
 import com.myspace.wiki.mapper.UserMapper;
 import com.myspace.wiki.request.UserQueryReq;
 import com.myspace.wiki.request.UserSaveReq;
@@ -15,6 +17,7 @@ import com.myspace.wiki.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -70,9 +73,15 @@ public class UserService {
     public void save(UserSaveReq req) {
         User user = CopyUtil.copy(req, User.class);
         if (ObjectUtils.isEmpty(req.getId())) {
-            // 新增
-            user.setId(snowFlake.nextId());
-            userMapper.insert(user);
+            User userDB = selectByLoginName(req.getLoginName());
+            if (ObjectUtils.isEmpty(userDB)) {
+                // 新增
+                user.setId(snowFlake.nextId());
+                userMapper.insert(user);
+                } else {
+                // 用户名已存在
+                    throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+                }
         } else {
             // 更新
             userMapper.updateByPrimaryKey(user);
@@ -81,5 +90,16 @@ public class UserService {
 
     public void delete(Long id) {
         userMapper.deleteByPrimaryKey(id);
+    }
+    public User selectByLoginName(String LoginName) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andLoginNameEqualTo(LoginName);
+        List<User> userList = userMapper.selectByExample(userExample);
+        if (CollectionUtils.isEmpty(userList)) {
+            return null;
+        } else {
+            return userList.get(0);
+        }
     }
 }

@@ -116,6 +116,8 @@ import {Tool} from "@/util/tool";
 import {useRoute} from "vue-router";
 import ExclamationCircleOutlined from "@ant-design/icons-vue/ExclamationCircleOutlined";
 import E from 'wangeditor'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/base16/solarized-light.css'
 
 export default defineComponent({
   name: 'AdminDoc',
@@ -207,6 +209,7 @@ export default defineComponent({
     const createEditor = () => {
       editor = new E('#content');
       editor.config.zIndex = 0;
+      editor.highlight = hljs;
       editor.create();
 
     }
@@ -343,7 +346,7 @@ export default defineComponent({
         ebookId: route.query.ebookId
       };
 
-      treeSelectData.value = Tool.copy(level1.value);
+      treeSelectData.value = Tool.copy(level1.value) || [];
 
       // 为选择树添加一个"无"
       treeSelectData.value.unshift({id: 0, name: '无'});

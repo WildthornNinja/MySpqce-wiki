@@ -63,8 +63,8 @@
       <a-form-item label="昵称">
         <a-input v-model:value="user.name" />
       </a-form-item>
-      <a-form-item label="密码">
-        <a-input v-model:value="user.password" />
+      <a-form-item label="密码" v-show="!user.id">
+        <a-input v-model:value="user.password"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -159,7 +159,7 @@ export default defineComponent({
       modalLoading.value = true;
 
       user.value.password = hexMd5(user.value.password + KEY);
-      
+
       axios.post("/user/save", user.value).then((response) => {
         modalLoading.value = false;
         const data = response.data; // data = commonResp

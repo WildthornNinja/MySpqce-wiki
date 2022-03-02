@@ -39,9 +39,9 @@
                   编辑
                 </a-button>
                 <a-popconfirm
-                    title="删除后不可恢复，确认删除?"
-                    ok-text="是"
-                    cancel-text="否"
+                    title="删除后可不能恢复~·确认删除嘛?"
+                    ok-text="就删！气死我了"
+                    cancel-text="暂且饶它一命"
                     @confirm="handleDelete(record.id)"
                 >
                   <a-button type="danger" size="small">

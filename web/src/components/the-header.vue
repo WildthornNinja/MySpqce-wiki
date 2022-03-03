@@ -2,7 +2,7 @@
   <a-layout-header class="header">
     <div class="logo" />
     <a-row>
-      <a-col :span="12">
+      <a-col :span="16">
     <a-menu
         theme="dark"
         mode="horizontal"
@@ -11,13 +11,13 @@
       <a-menu-item key="/">
         <router-link to="/">首页</router-link>
       </a-menu-item>
-      <a-menu-item key="/admin/user">
+      <a-menu-item key="/admin/user" v-if="user.id">
         <router-link to="/admin/user">用户管理</router-link>
       </a-menu-item>
-      <a-menu-item key="/admin/ebook">
+      <a-menu-item key="/admin/ebook"  v-if="user.id">
         <router-link to="/admin/ebook">电子书管理</router-link>
       </a-menu-item>
-      <a-menu-item key="/admin/category">
+      <a-menu-item key="/admin/category"  v-if="user.id">
         <router-link to="/admin/category">分类管理</router-link>
       </a-menu-item>
       <a-menu-item key="/about">
@@ -26,7 +26,7 @@
 
     </a-menu>
       </a-col>
-      <a-col :span="12">
+      <a-col :span="8">
         <a-popconfirm
         title="确认退出登录?"
         ok-text="是"

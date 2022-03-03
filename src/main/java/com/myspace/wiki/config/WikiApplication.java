@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @ComponentScan 注解来扫描包,但只会扫描当前包的子包
@@ -15,6 +16,7 @@ import org.springframework.core.env.Environment;
 @ComponentScan("com.myspace")
 @SpringBootApplication
 @MapperScan("com.myspace.wiki.mapper")
+@EnableScheduling
 public class WikiApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(WikiApplication.class);

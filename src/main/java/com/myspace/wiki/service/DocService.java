@@ -8,6 +8,7 @@ import com.myspace.wiki.domain.Doc;
 import com.myspace.wiki.domain.DocExample;
 import com.myspace.wiki.mapper.ContentMapper;
 import com.myspace.wiki.mapper.DocMapper;
+import com.myspace.wiki.mapper.DocMapperCust;
 import com.myspace.wiki.request.DocQueryReq;
 import com.myspace.wiki.request.DocSaveReq;
 import com.myspace.wiki.response.DocQueryResp;
@@ -33,6 +34,8 @@ public class DocService {
     private ContentMapper contentMapper;
     @Resource
     private SnowFlake snowFlake;
+    @Resource
+    private DocMapperCust docMapperCust;
 
     public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
@@ -95,6 +98,8 @@ public class DocService {
         if (ObjectUtils.isEmpty(req.getId())) {
             // 新增
             doc.setId(snowFlake.nextId());
+            doc.setViewCount(0);
+            doc.setVoteCount(0);
             docMapper.insert(doc);
 
             content.setId(doc.getId());
@@ -130,6 +135,8 @@ public class DocService {
      */
     public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
+        // 文档阅读数+1
+        docMapperCust.increaseViewCount(id);
         if (ObjectUtils.isEmpty(content)) {
             return "";
             } else {

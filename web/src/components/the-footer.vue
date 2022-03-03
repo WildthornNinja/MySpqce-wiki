@@ -1,7 +1,7 @@
 <template>
   <a-layout-footer style="text-align: center">
     <span>野棘忍WildThornのwiki</span>
-    <span> 欢迎 {{user.name}}</span>
+    <span v-show="user.id">> 欢迎 {{user.name}}</span>
 
   </a-layout-footer>
 </template>

@@ -11,7 +11,7 @@
       >
         <a-menu-item key="welcome">
           <MailOutlined />
-          <span>欢迎</span>
+          <the-welcome></the-welcome>
           </a-menu-item>
         <a-sub-menu v-for="item in level1" :key="item.id">
         <template v-slot:title>
@@ -68,7 +68,7 @@ import { defineComponent ,onMounted ,ref, reactive, toRef} from 'vue';
 import  axios from 'axios';
 import { message } from 'ant-design-vue';
 import {Tool} from "@/util/tool";
-
+import TheWelcome from '@/components/the-welcome.vue';
 // const listData: Record<string, string>[] = [];
 //
 // for (let i = 0; i < 23; i++) {
@@ -85,6 +85,9 @@ import {Tool} from "@/util/tool";
 
 export default defineComponent({
   name: 'Home',
+  components: {
+    TheWelcome
+  },
   setup(){
     console.log("setup");
     const ebooks = ref();

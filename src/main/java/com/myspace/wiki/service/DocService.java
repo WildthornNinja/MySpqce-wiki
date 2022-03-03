@@ -43,6 +43,8 @@ public class DocService {
     public RedisUtil redisUtil;
     @Resource
     public WebSocketServer webSocketServer;
+    @Resource
+    public WsService wsService;
 
     public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
@@ -165,7 +167,7 @@ public class DocService {
 //        }
         // 推送消息
         Doc docDb = docMapper.selectByPrimaryKey(id);
-        webSocketServer.sendInfo("文档【" + docDb.getName() + "】刚刚被点赞啦!");
+        wsService.sendInfo("【" + docDb.getName() + "】被点赞！");
     }
     public void updateEbookInfo() {
         docMapperCust.updateEbookInfo();

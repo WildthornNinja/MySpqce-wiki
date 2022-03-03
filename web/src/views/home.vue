@@ -34,10 +34,18 @@
         <template #renderItem="{ item }">
           <a-list-item key="item.name">
             <template #actions>
-          <span v-for="{ type, text } in actions" :key="type">
-            <component :is="type" style="margin-right: 8px" />
-            {{ text }}
-          </span>
+            <span>
+                <component v-bind:is="'file-text-two-tone'" two-tone-color="#52c41a" style="margin-right: 15px" />
+                {{ item.docCount }}
+              </span>
+              <span>
+                <component v-bind:is="'smile-two-tone'" two-tone-color="#FFD05C" style="margin-right: 15px"/>
+                {{ item.viewCount }}
+              </span>
+              <span>
+                <component v-bind:is="'like-two-tone'" two-tone-color="#eb2f96" style="margin-right: 15px" />
+                {{ item.voteCount }}
+              </span>
             </template>
             <a-list-item-meta :description="item.description">
               <template #title>
@@ -144,11 +152,7 @@ export default defineComponent({
         },
         pageSize: 3,
       },
-      actions: [
-      { type: 'star-two-tone', text: '156' },
-      { type: 'like-two-tone', text: '156' },
-      { type: 'message-two-tone', text: '2' },
-    ],
+
       handleClick,
       level1,
       isShowWelcome

@@ -13,9 +13,11 @@ public class WsService {
     @Resource
     public WebSocketServer webSocketServer;
 
+
     @Async
     public void sendInfo(String message ,String logId) {
         MDC.put("LOG_ID", logId);
         webSocketServer.sendInfo(message);
+
     }
 }

@@ -14,6 +14,8 @@ import com.myspace.wiki.request.DocSaveReq;
 import com.myspace.wiki.response.DocQueryResp;
 import com.myspace.wiki.response.PageResp;
 import com.myspace.wiki.util.CopyUtil;
+import com.myspace.wiki.util.RedisUtil;
+import com.myspace.wiki.util.RequestContext;
 import com.myspace.wiki.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,8 @@ public class DocService {
     private SnowFlake snowFlake;
     @Resource
     private DocMapperCust docMapperCust;
+    @Resource
+    public RedisUtil redisUtil;
 
     public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
@@ -148,5 +152,13 @@ public class DocService {
      */
     public void vote(Long id) {
         docMapperCust.increaseVoteCount(id);
+        // docMapperCust.increaseVoteCount(id);
+        // 远程IP+doc.id作为key，24小时内不能重复
+        String ip = RequestContext.getRemoteAddr();
+//        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 3600 * 24)) {
+//            docMapperCust.increaseVoteCount(id);
+//        } else {
+//            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
+//        }
     }
 }

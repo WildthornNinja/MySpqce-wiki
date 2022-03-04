@@ -11,7 +11,7 @@
       >
         <a-menu-item key="welcome">
           <MailOutlined />
-          <the-welcome></the-welcome>
+          <span>欢迎使用野棘忍的wiki</span>
           </a-menu-item>
         <a-sub-menu v-for="item in level1" :key="item.id">
         <template v-slot:title>
@@ -27,7 +27,7 @@
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
       <div class="welcome" v-show="isShowWelcome">
-        <h1>欢迎使用WIKI知识库</h1>
+        <the-welcome></the-welcome>
       </div>
       <a-list  v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{ gutter: 20, column: 2}" :pagination="pagination" :data-source="ebooks">
 

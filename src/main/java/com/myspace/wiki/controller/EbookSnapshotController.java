@@ -1,6 +1,5 @@
 package com.myspace.wiki.controller;
 
-
 import com.myspace.wiki.response.CommonResp;
 import com.myspace.wiki.response.StatisticResp;
 import com.myspace.wiki.service.EbookSnapshotService;
@@ -25,5 +24,11 @@ public class EbookSnapshotController {
         commonResp.setContent(statisticResp);
         return commonResp;
     }
-
+    @GetMapping("/get-30-statistic")
+    public CommonResp get30Statistic() {
+        List<StatisticResp> statisticResp = ebookSnapshotService.get30Statistic();
+        CommonResp<List<StatisticResp>> commonResp = new CommonResp<>();
+        commonResp.setContent(statisticResp);
+        return commonResp;
+    }
 }

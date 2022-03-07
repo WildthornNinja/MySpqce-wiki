@@ -1,9 +1,12 @@
 package com.myspace.wiki.interceptor;
 
+import com.alibaba.fastjson.JSONObject;
+import com.myspace.wiki.response.CommonResp;
 import com.myspace.wiki.response.UserLoginResp;
 import com.myspace.wiki.util.LoginUserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -33,14 +36,14 @@ public class ActionInterceptor implements HandlerInterceptor {
             return true;
         }
 
-//        LOG.info("操作被拦截");
-//        response.setStatus(HttpStatus.OK.value());
-//        CommonResp commonResp = new CommonResp();
-//        commonResp.setSuccess(false);
-//        commonResp.setMessage("哈哈，操作被拦截了，你就当操作成功了！示例网站暂不开放增删改操作");
-//        response.setContentType("application/json;charset=UTF-8");
-//        response.setCharacterEncoding("UTF-8");
-//        response.getWriter().print(JSONObject.toJSON(commonResp));
+        LOG.info("操作被拦截");
+        response.setStatus(HttpStatus.OK.value());
+        CommonResp commonResp = new CommonResp();
+        commonResp.setSuccess(false);
+        commonResp.setMessage("哈哈，操作被拦截了，只有admin小组长才可以进行以下操作哦!");
+        response.setContentType("application/json;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().print(JSONObject.toJSON(commonResp));
         return false;
     }
 

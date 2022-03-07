@@ -5,15 +5,15 @@
     >
       <p>
         <a-form layout="inline" :model="param">
-          <a-form-item>
-            <a-input v-model:value="param.name" placeholder="名称">
-            </a-input>
-          </a-form-item>
-          <a-form-item>
-            <a-button type="primary" @click="handleQuery()">
-              查询
-            </a-button>
-          </a-form-item>
+<!--          <a-form-item>-->
+<!--            <a-input v-model:value="param.name" placeholder="名称">-->
+<!--            </a-input>-->
+<!--          </a-form-item>-->
+<!--          <a-form-item>-->
+<!--            <a-button type="primary" @click="handleQuery()">-->
+<!--              查询-->
+<!--            </a-button>-->
+<!--          </a-form-item>-->
           <a-form-item>
             <a-button  @click="add()">
               新增
@@ -21,13 +21,23 @@
           </a-form-item>
         </a-form>
       </p>
+      <p>
+        <a-alert
+                class="tip"
+                message="小提示：这里的分类会显示到首页的侧边菜单"
+                type="info"
+                closable
+        />
+      </p>
       <a-table
+          v-if="level1.length > 0"
           :columns="columns"
           :row-key="record => record.id"
 
           :data-source="level1"
           :pagination="false"
           :loading="loading"
+          :defaultExpandAllRows="true"
       >
         <template #cover="{ text: cover }">
           <img v-if="cover" :src="cover" alt="avatar" />
@@ -128,7 +138,7 @@ export default defineComponent({
      * }]
      */
     const level1 = ref(); // 一级分类树，children属性就是二级分类
-
+    level1.value = [];
     /**
      * 数据查询
      **/

@@ -205,14 +205,19 @@ export default defineComponent({
     const modalVisible = ref(false);
     const modalLoading = ref(false);
     // 初始化富文本
+    // 显示上传图片按钮，转成Base64存储，同时也支持拖拽图片
+    // 上传图片文档：https://doc.wangeditor.com/pages/07-%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87/01-%E9%85%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A5%E5%8F%A3.html
+    // 上传视频文档：https://doc.wangeditor.com/pages/07-%E4%B8%8A%E4%BC%A0%E8%A7%86%E9%A2%91/01-%E9%85%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A5%E5%8F%A3.html
     let editor:any;
     const createEditor = () => {
       editor = new E('#content');
       editor.config.zIndex = 0;
       editor.highlight = hljs;
+      editor.config.uploadImgShowBase64 = true;
       editor.create();
 
     }
+
 
     const handleSave = () => {
       modalLoading.value = true;

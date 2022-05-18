@@ -124,7 +124,7 @@ export default defineComponent({
             statistic.value.todayVoteCount = statisticResp[1].voteIncrease;
           }
 
-
+          //今日预计阅读=今天到目前为止的阅读量/(当前时间点占一天的百分比)
           // 按分钟计算当前时间点，占一天的百分比
           const now = new Date();
           const nowRate = (now.getHours() * 60 + now.getMinutes()) / (60 * 24);
@@ -134,6 +134,7 @@ export default defineComponent({
           const viewIncrease0 = statisticResp[0].viewIncrease === 0 ? 1 : statisticResp[0].viewIncrease;
           // todayViewIncreaseRate：今日预计增长率
           statistic.value.todayViewIncreaseRate = (statistic.value.todayViewIncrease - statisticResp[0].viewIncrease) / viewIncrease0 * 100;
+          //取绝对值显示
           statistic.value.todayViewIncreaseRateAbs = Math.abs(statistic.value.todayViewIncreaseRate);
         }
       });

@@ -6,6 +6,8 @@ import com.github.pagehelper.PageInfo;
 import com.myspace.wiki.domain.Content;
 import com.myspace.wiki.domain.Doc;
 import com.myspace.wiki.domain.DocExample;
+import com.myspace.wiki.exception.BusinessException;
+import com.myspace.wiki.exception.BusinessExceptionCode;
 import com.myspace.wiki.mapper.ContentMapper;
 import com.myspace.wiki.mapper.DocMapper;
 import com.myspace.wiki.mapper.DocMapperCust;
@@ -113,6 +115,7 @@ public class DocService {
         if (ObjectUtils.isEmpty(req.getId())) {
             // 新增
             doc.setId(snowFlake.nextId());
+            //默认值为0，但insert()方法全字段插入数据，default会失效
             doc.setViewCount(0);
             doc.setVoteCount(0);
             docMapper.insert(doc);
@@ -122,7 +125,7 @@ public class DocService {
         } else {
             // 更新
             docMapper.updateByPrimaryKey(doc);
-            int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);
+            int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);//BOLOB代表富文本字段即 大字段
             if (count == 0) {
                 contentMapper.insert(content);
                 }
@@ -151,7 +154,7 @@ public class DocService {
     public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
         // 文档阅读数+1
-        docMapperCust.increaseViewCount(id);
+        docMapperCust.increaseViewCount(id);//自定义SQL语句
         if (ObjectUtils.isEmpty(content)) {
             return "";
             } else {
@@ -166,17 +169,20 @@ public class DocService {
         // docMapperCust.increaseVoteCount(id);
         // 远程IP+doc.id作为key，24小时内不能重复
         String ip = RequestContext.getRemoteAddr();
-//        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 3600 * 24)) {
-//            docMapperCust.increaseVoteCount(id);
-//        } else {
-//            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
-//        }
+        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 3600 * 24)) {
+            docMapperCust.increaseVoteCount(id);
+        } else {
+            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
+        }
         // 推送消息
         Doc docDb = docMapper.selectByPrimaryKey(id);
         String logId = MDC.get("LOG_ID");
         wsService.sendInfo("【" + docDb.getName() + "】被点赞！", logId);
         //rocketMQTemplate.convertAndSend("VOTE_TOPIC", "【" + docDb.getName() + "】被点赞！");
     }
+    /*
+    更新电子书中所有文档阅读、点赞数据
+     */
     public void updateEbookInfo() {
         docMapperCust.updateEbookInfo();
     }

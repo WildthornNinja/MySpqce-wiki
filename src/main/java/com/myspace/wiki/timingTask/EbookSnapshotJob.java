@@ -25,6 +25,7 @@ public class EbookSnapshotJob {
     /**
      * 自定义cron表达式跑批
      * 只有等上一次执行完成，下一次才会在下一个时间点执行，错过就错过
+     * 5秒获取一次电子书快照表信息
      */
     @Scheduled(cron = "0/5 * * * * ?")
     public void doSnapshot() {

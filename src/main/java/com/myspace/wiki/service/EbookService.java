@@ -69,7 +69,7 @@ public class EbookService {
         List<EbookQueryResp> list = CopyUtil.copyList(ebookList, EbookQueryResp.class);
 
         PageResp<EbookQueryResp> pageResp = new PageResp();
-        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setTotal(pageInfo.getTotal());//只返回Total总行数前端自己计算总页数
         pageResp.setList(list);
 
         return pageResp;

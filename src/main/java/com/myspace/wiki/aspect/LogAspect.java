@@ -35,7 +35,7 @@ public class LogAspect {
     /** 定义一个切点 */
     @Pointcut("execution(public * com.myspace.*.controller..*Controller.*(..))")
     public void controllerPointcut() {}
-
+    /** 前置通知 */
     @Before("controllerPointcut()")
     public void doBefore(JoinPoint joinPoint) throws Throwable {
 
@@ -76,7 +76,7 @@ public class LogAspect {
         excludefilter.addExcludes(excludeProperties);
         LOG.info("请求参数: {}", JSONObject.toJSONString(arguments, excludefilter));
     }
-
+    /** 环绕通知 */
     @Around("controllerPointcut()")
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();

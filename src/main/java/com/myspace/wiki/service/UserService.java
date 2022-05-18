@@ -96,6 +96,7 @@ public class UserService {
     public void delete(Long id) {
         userMapper.deleteByPrimaryKey(id);
     }
+
     public User selectByLoginName(String LoginName) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();

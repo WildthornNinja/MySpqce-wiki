@@ -82,8 +82,8 @@ export default defineComponent({
     const user = computed(() => store.state.user);
     // 用来登录
     const loginUser = ref({
-      loginName: "test",
-      password: "test123"
+      loginName: "",
+      password: ""
     });
     const loginModalVisible = ref(false);
     const loginModalLoading = ref(false);

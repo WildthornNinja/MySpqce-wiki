@@ -46,7 +46,7 @@ public class DocController {
     @DeleteMapping("/delete/{idsStr}")
     public CommonResp delete(@PathVariable String idsStr) {
         CommonResp resp = new CommonResp<>();
-        List<String> list = Arrays.asList(idsStr.split(","));
+        List<String> list = Arrays.asList(idsStr.split(","));//先根据","转数组，再转成list
         docService.delete(list);
         return resp;
     }
